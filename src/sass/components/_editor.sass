@@ -1,0 +1,46 @@
+// INDEX
+
+.editor-head
+  position: absolute
+  top: 40px
+  right: 0
+  left: 0
+  z-index: 9
+  background: white
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15)
+
+  &__wrapper
+    display: flex
+    align-items: center
+    height: 60px
+    
+.editor
+  padding-top: 100px
+  &-grid
+    display: flex
+    /* 100px is a header offset
+    height: calc(100vh - 100px)
+    min-height: 400px
+
+    &__col
+      position: relative
+      z-index: 1
+      flex: 0 0 230px
+      max-width: 230px
+      min-width: 1px
+      min-height: 0
+      &::after
+        display: inline-block
+        content: ' '
+        position: absolute
+        top: 0
+        bottom: 0
+        left: 0
+        z-index: 1
+        width: 1px
+        background: $borderColor
+
+
+
+/* inof message
+.editor-info

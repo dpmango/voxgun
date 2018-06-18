@@ -2,21 +2,17 @@
 header.header
   .container
     .header__wrapper
+      .header__back
+
       a(href="#").header__logo
-        +icon('ico-email')
-      ul.header__menu
-        - var list = ["Homepage", "Shop", "Blog", "Lorem"]
-          each item in list
-            li
-              a.header__menu-link(href="#")=item
+        include ../../inline-svg/logo.svg
       
-      .header__cta
-        .header__cart
-          +icon('ico-email')
-      
-      .header__hamburger
-        .hamburger.hamburger--squeeze(js-hamburger)
-          .hamburger-box
-            .hamburger-inner
+      .header__user
+        
+
+      //- .header__hamburger
+      //-   .hamburger.hamburger--squeeze(js-hamburger)
+      //-     .hamburger-box
+      //-       .hamburger-inner
         
 // HEADER :: END

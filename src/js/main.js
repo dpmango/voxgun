@@ -12,11 +12,12 @@ $(document).ready(function(){
   ////////////
   function pageReady(){
     legacySupport();
-    updateHeaderActiveClass();
-    initHeaderScroll();
 
-    initPopups();
     initSliders();
+    initPerfectScrollbar();
+    initLazyLoad();
+    initTeleport();
+
     initScrollMonitor();
     initMasks();
     initSelectric();
@@ -24,25 +25,46 @@ $(document).ready(function(){
 
     // development helper
     _window.on('resize', debounce(setBreakpoint, 200))
-
-    // AVAILABLE in _components folder
-    // copy paste in main.js and initialize here
-    // initPerfectScrollbar();
-    // initLazyLoad();
-    // initTeleport();
-    // parseSvg();
-    // revealFooter();
-    // _window.on('resize', throttle(revealFooter, 100));
   }
 
   // this is a master function which should have all functionality
   pageReady();
 
 
-  // some plugins work best with onload triggers
-  _window.on('load', function(){
-    // your functions
-  })
+  // detectors
+  function isRetinaDisplay() {
+    if (window.matchMedia) {
+        var mq = window.matchMedia("only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)");
+        return (mq && mq.matches || (window.devicePixelRatio > 1));
+    }
+  }
+
+  function isMobile(){
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  function msieversion() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  if ( msieversion() ){
+    $('body').addClass('is-ie');
+  }
+
+  if ( isMobile() ){
+    $('body').addClass('is-mobile');
+  }
 
 
   //////////
@@ -65,41 +87,8 @@ $(document).ready(function(){
   // Prevent # behavior
 	_document
     .on('click', '[href="#"]', function(e) {
-  		e.preventDefault();
-  	})
-    .on('click', 'a[href^="#section"]', function() { // section scroll
-      var el = $(this).attr('href');
-      $('body, html').animate({
-          scrollTop: $(el).offset().top}, 1000);
-      return false;
+      e.preventDefault();
     })
-
-
-  // HEADER SCROLL
-  // add .header-static for .page or body
-  // to disable sticky header
-  function initHeaderScroll(){
-    _window.on('scroll', throttle(function(e) {
-      var vScroll = _window.scrollTop();
-      var header = $('.header').not('.header--static');
-      var headerHeight = header.height();
-      var firstSection = _document.find('.page__content div:first-child()').height() - headerHeight;
-      var visibleWhen = Math.round(_document.height() / _window.height()) >  2.5
-
-      if (visibleWhen){
-        if ( vScroll > headerHeight ){
-          header.addClass('is-fixed');
-        } else {
-          header.removeClass('is-fixed');
-        }
-        if ( vScroll > firstSection ){
-          header.addClass('is-fixed-visible');
-        } else {
-          header.removeClass('is-fixed-visible');
-        }
-      }
-    }, 10));
-  }
 
 
   // HAMBURGER TOGGLER
@@ -161,55 +150,22 @@ $(document).ready(function(){
       }
     })
 
-  }
+    // Swiper grid scroller
+    // emulate overflow-x scroll
+    new Swiper('[js-swiper-scroll-x]', {
+      wrapperClass: "swiper-wrapper",
+      slideClass: "editor-grid__col",
+      direction: 'horizontal',
+      loop: false,
+      watchOverflow: true,
+      setWrapperSize: false,
+      spaceBetween: 0,
+      slidesPerView: 'auto',
+      normalizeSlideIndex: true,
+      freeMode: true,
+    })
 
-  //////////
-  // MODALS
-  //////////
 
-  function initPopups(){
-    // Magnific Popup
-    var startWindowScroll = 0;
-    $('[js-popup]').magnificPopup({
-      type: 'inline',
-      fixedContentPos: true,
-      fixedBgPos: true,
-      overflowY: 'auto',
-      closeBtnInside: true,
-      preloader: false,
-      midClick: true,
-      removalDelay: 300,
-      mainClass: 'popup-buble',
-      callbacks: {
-        beforeOpen: function() {
-          startWindowScroll = _window.scrollTop();
-          // $('html').addClass('mfp-helper');
-        },
-        close: function() {
-          // $('html').removeClass('mfp-helper');
-          _window.scrollTop(startWindowScroll);
-        }
-      }
-    });
-
-    $('[js-popup-gallery]').magnificPopup({
-  		delegate: 'a',
-  		type: 'image',
-  		tLoading: 'Загрузка #%curr%...',
-  		mainClass: 'popup-buble',
-  		gallery: {
-  			enabled: true,
-  			navigateByImgClick: true,
-  			preload: [0,1]
-  		},
-  		image: {
-  			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
-  		}
-  	});
-  }
-
-  function closeMfp(){
-    $.magnificPopup.close();
   }
 
   ////////////
@@ -263,6 +219,112 @@ $(document).ready(function(){
       }
     });
   }
+
+
+    ////////////
+  // SCROLLBAR
+  ////////////
+  function initPerfectScrollbar(){
+    if ( $('[js-scrollbar]').length > 0 ){
+      $('[js-scrollbar]').each(function(i, scrollbar){
+        var ps;
+
+        function initPS(){
+          ps = new PerfectScrollbar(scrollbar, {
+            // wheelSpeed: 2,
+            // wheelPropagation: true,
+            minScrollbarLength: 20
+          });
+        }
+
+        initPS();
+
+        // toggle init destroy
+        function checkMedia(){
+          if ( $(scrollbar).data('disable-on') ){
+
+            if ( mediaCondition($(scrollbar).data('disable-on')) ){
+              if ( $(scrollbar).is('.ps') ){
+                ps.destroy();
+                ps = null;
+              }
+            } else {
+              if ( $(scrollbar).not('.ps') ){
+                initPS();
+              }
+            }
+          }
+        }
+
+        checkMedia();
+        _window.on('resize', debounce(checkMedia, 250));
+
+      })
+    }
+  }
+
+
+  //////////
+  // LAZY LOAD
+  //////////
+  function initLazyLoad(){
+    _document.find('[js-lazy]').Lazy({
+      threshold: 500,
+      enableThrottle: true,
+      throttle: 100,
+      scrollDirection: 'vertical',
+      effect: 'fadeIn',
+      effectTime: 350,
+      // visibleOnly: true,
+      // placeholder: "data:image/gif;base64,R0lGODlhEALAPQAPzl5uLr9Nrl8e7...",
+      onError: function(element) {
+          console.log('error loading ' + element.data('src'));
+      },
+      beforeLoad: function(element){
+        // element.attr('style', '')
+      }
+    });
+  }
+
+  ////////////
+  // TELEPORT PLUGIN
+  ////////////
+  function initTeleport(){
+    $('[js-teleport]').each(function (i, val) {
+      var self = $(val)
+      var objHtml = $(val).html();
+      var target = $('[data-teleport-target=' + $(val).data('teleport-to') + ']');
+      var conditionMedia = $(val).data('teleport-condition').substring(1);
+      var conditionPosition = $(val).data('teleport-condition').substring(0, 1);
+
+      if (target && objHtml && conditionPosition) {
+
+        function teleport() {
+          var condition;
+
+          if (conditionPosition === "<") {
+            condition = _window.width() < conditionMedia;
+          } else if (conditionPosition === ">") {
+            condition = _window.width() > conditionMedia;
+          }
+
+          if (condition) {
+            target.html(objHtml)
+            self.html('')
+          } else {
+            self.html(objHtml)
+            target.html("")
+          }
+        }
+
+        teleport();
+        _window.on('resize', debounce(teleport, 100));
+
+
+      }
+    })
+  }
+
 
   ////////////
   // SCROLLMONITOR - WOW LIKE
