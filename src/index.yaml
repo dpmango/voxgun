@@ -1,0 +1,5 @@
+ProjectTitle: Voxgun
+
+PageList:
+- file: editor.html
+  ready: 10
