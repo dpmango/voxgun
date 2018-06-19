@@ -6,11 +6,36 @@ block content
 
   .editor
     // editor head
-    .editor-head
+    .e-head
       .container
-        .editor-head__wrapper
-          .test-tt(data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom") Test tooltip
+        .e-head__wrapper
+          // create controls
+          .e-head__create-controls
+            .btn-row.btn-row--spaced
+              .btn.btn-light.btn-sm.btn-iconed.btn-add-music(data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom")
+                +icon('ico-music-note')
+                span Add Music
+              .btn.btn-light.btn-sm.btn-iconed.btn-add-voice(data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom")
+                +icon('ico-speaker')
+                span Add voice
+              .btn.btn-light.btn-sm(data-toggle="tooltip" data-placement="bottom" title="Choose Scene colors")
+                .stack-colors-x
+                  i.icon.icon-color(data-color="black")
+                  i.icon.icon-color(data-color="white")
           
+          // name controls
+          .e-head__file-controls
+            .e-head__file-name(contenteditable) Name of video
+          
+          // scene controls
+          .e-head__scene-controls
+            .btn-row.btn-row--spaced.justify-content-end
+              .btn.btn-primary.btn-sm.btn-iconed.btn-play-preview.disabled
+                +icon('ico-play')
+                span Play preview
+              .btn.btn-primary.btn-sm.btn-iconed.btn-add-scene(js-add-scene)
+                +icon('ico-plus')
+              
     // grid
     .editor-grid(js-swiper-scroll-x).swiper-container
       .swiper-wrapper
@@ -29,8 +54,10 @@ block content
         .editor-grid__col
       
       // scrollbar
-      .editor-grid__scrollbar
+      .swiper-scrollbar.editor-grid__scrollbar
         
       // blank message
       .editor-info
+        p Start edit your video by clicking on Scenes. <br> Click button “Play Preview” at the top right to see the result.
+        a(href="#").btn.btn-success.btn-sm Add New Scene
         

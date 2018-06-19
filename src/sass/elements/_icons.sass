@@ -16,6 +16,35 @@
   font-style: normal
   content: ' '
 
+  // css only icons
+  &-color
+    position: relative
+    z-index: 1
+    size: 18px
+    border-radius: 50%
+    &[data-color="black"]
+      background: black
+    &[data-color="white"]
+      background: white
+    &:hover
+      z-index: 2
+
+.stack-colors-x
+  font-size: 0
+  .icon
+    margin-left: -4px
+    &:first-child
+      margin-left: 0
+      margin-right: -4px
+
+.stack-colors-y
+  font-size: 0
+  .icon
+    margin-top: -4px
+    &:first-child
+      margin-top: 0
+      margin-bottom: -4px
+
 // reset for empty icons
 .ico
   fill: currentColor

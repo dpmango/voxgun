@@ -1,34 +1,64 @@
 // buttons
 button
-  -webkit-apperance: none
-  border: 0
-  box-shadow: none
-  cursor: pointer
-  &:focus
-    outline: none
+  // -webkit-apperance: none
+  // border: 0
+  // box-shadow: none
+  // cursor: pointer
+  // &:focus
+  //   outline: none
 
 .btn
-  display: inline-block
-  position: relative
-  text-align: center
-  transition: all $transitionSpeed ease-in-out
-  &:focus, &:active
-    outline: none
-  &--block
-    display: block
-    width: 100%
+  // display: inline-block
+  // position: relative
+  // text-align: center
+  // transition: all $transitionSpeed $ease
+  // &:focus, &:active
+  //   outline: none
+  // &--block
+  //   display: block
+  //   width: 100%
 
-  &-example
-    // please use paddings instead of line-height to control btn height
-    background: $colorOrange
-    font-size: 20px
-    padding: 15px 30px
-    color: white
-    transition: .25s $ease
-    transform-origin: center bottom
-    box-shadow: none
-    will-change: box-shadow, transform
+  /* will conflict with bs
+  // (no way to rewrite $font-size-base for btn only)
+  &-sm
+    font-size: 12px
+
+  /* some custom modifiers
+  &-iconed
+    display: flex
+    align-items: center
+    .ico
+      font-size: 18px
+      transition: .25s $ease
+    span
+      display: inline-block
+      margin-left: 12px
+
+
+  &-add-music,
+  &-add-voice
+    .ico
+      fill: #C4C4C4
+    span
+      color: $colorBlue
     &:hover
-      transform: scale(1.05) translateY(-5px)
-      background: rgba($colorOrange, .9)
-      box-shadow: 0 15px 10px -15px rgba($fontColor, .4)
+      .ico
+        fill: $colorBlue
+
+  &-play-preview
+    .ico
+      font-size: 9px
+  &-add-scene
+    .ico
+      font-size: 11px
+      fill: white
+
+/* BTN row
+.btn-row
+  display: flex
+  flex-wrap: wrap
+  &--spaced
+    .btn
+      margin-right: 9px
+      &:last-child
+        margin-right: 0

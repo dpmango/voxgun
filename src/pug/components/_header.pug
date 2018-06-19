@@ -3,11 +3,17 @@ header.header
   .container
     .header__wrapper
       .header__back
-
+        a(href="#").header__back-link
+          +icon('ico-back-arrow')
+          span Back
+        
       a(href="#").header__logo
         include ../../inline-svg/logo.svg
       
       .header__user
+        a(href="#").header__user-name scalascope@gmail.com
+        .header__user-avatar.user-avatar(data-bg="purple")
+          span S
         
 
       //- .header__hamburger
