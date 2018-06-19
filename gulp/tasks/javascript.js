@@ -21,7 +21,11 @@ gulp.task('javascript:vendor', function() {
       path.resolve('bower_components', 'barba.js/dist/barba.min.js'),
       path.resolve('bower_components', 'jquery-lazy/jquery.lazy.min.js'),
       path.resolve('bower_components', 'animejs/anime.min.js'),
-      config.src.js + '/vendor/**/*.js'
+      path.resolve('bower_components', 'popper.js/dist/umd/popper.min.js'),
+      config.src.js + '/vendor/**/*.js',
+      config.src.js + '/bootstrap/index.js',
+      config.src.js + '/bootstrap/util.js',
+      config.src.js + '/bootstrap/tooltip.js',
      ])
     .pipe(plumber({ errorHandler: config.errorHandler }))
     .pipe(concat('vendor.js'))

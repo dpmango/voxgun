@@ -20,6 +20,7 @@ $(document).ready(function(){
 
     initScrollMonitor();
     initMasks();
+    initTooltips();
     initSelectric();
     initValidations();
 
@@ -163,6 +164,10 @@ $(document).ready(function(){
       slidesPerView: 'auto',
       normalizeSlideIndex: true,
       freeMode: true,
+      scrollbar: {
+        el: '.editor-grid__scrollbar',
+        hide: true,
+      },
     })
 
 
@@ -191,6 +196,10 @@ $(document).ready(function(){
   function initMasks(){
     $("[js-dateMask]").mask("99.99.99",{placeholder:"ДД.ММ.ГГ"});
     $("input[type='tel']").mask("+7 (000) 000-0000", {placeholder: "+7 (___) ___-____"});
+  }
+
+  function initTooltips(){
+    $('[data-toggle="tooltip"]').tooltip()
   }
 
   // selectric
